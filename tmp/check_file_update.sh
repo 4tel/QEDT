@@ -12,7 +12,8 @@ function check_update() {
     if [ "$file_info" != "$new_file_info" ]; then
       echo "파일이 업데이트되었습니다:"
       # 변경된 파일 목록 출력
-      diff <(echo "$file_info") <(echo "$new_file_info") | grep '^<' | awk '{print $9}'
+      # '^>' : start with '>'
+      diff <(echo "$file_info") <(echo "$new_file_info") | grep '^>' | awk '{print $10" ("$9")"}'
       # 변경된 파일 정보 업데이트
       file_info="$new_file_info"
     fi

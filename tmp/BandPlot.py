@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 plt.rcParams["figure.dpi"]=150
 plt.rcParams["figure.facecolor"]="white"
 plt.rcParams["figure.figsize"]=(8, 6)

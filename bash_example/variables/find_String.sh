@@ -5,12 +5,13 @@
 # ${var%pattern} - Removes the smallest string from the right side that matches the pattern.
 # ${var%%pattern} - Removes the largest string from the right side that matches the pattern.
 foo="foo-bar-foobar"
-echo ${foo#*-}   # echoes 'bar-foobar'  (Removes 'foo-' because that matches '*-')
-echo ${foo##*-}  # echoes 'foobar' (Removes 'foo-bar-')
-echo ${foo%-*}   # echoes 'foo-bar'
-echo ${foo%%-*}  # echoes 'foo'
-
-STR="123,456,567 5,343"
-STR_ARRAY=(`echo $STR | tr "," "\n"`)
-echo ${STR_ARRAY[@]}
+echo -e "-string: ${KGRN}${foo}${KNRM}"
+# echoes 'bar-foobar'  (Removes 'foo-' because that matches '*-')
+echo -e "long tail(#): ${KGRN}${foo#*-}${KNRM}"
+# echoes 'foobar' (Removes 'foo-bar-')
+echo -e "short tail(##): ${KGRN}${foo##*-}${KNRM}"
+# echoes 'foo-bar'
+echo -e "lone head(%): ${KGRN}${foo%-*}${KNRM}"
+# echoes 'foo'
+echo -e "short head(%%): ${KGRN}${foo%%-*}${KNRM}"
 
