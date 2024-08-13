@@ -1,7 +1,6 @@
 # .bashrc
 
 condas="/home/yhkim/programs/condas/"
-alias .list="conda env list"
 alias .act="conda activate "
 alias .deact="conda deactivate"
-alias .actqe="conda activate qepy"
+alias .list="conda env list"

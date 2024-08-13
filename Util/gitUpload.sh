@@ -13,9 +13,12 @@ IFS='.'
 # read ${current_version/v/}, seperate by IFS and Save to major, minor, patch
 read -r major minor patch <<< "${version}"
 
+# add patch version and 1
 patch=$((patch+1))
 new_version="v${major}.${minor}.${patch}"
 echo -e "${KGRN}new version:${new_version}${KNRM}"
 
+# commit to current branch
 git commit -m "${new_version}"
-git push origin tddft7.3.1v
+branch=$(git rev-parse --abbrev-ref HEAD)
+git push origin $branch

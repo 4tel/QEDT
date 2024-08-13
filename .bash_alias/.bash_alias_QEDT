@@ -19,7 +19,6 @@ alias .qdel="${pbsUtil} job_drop"
 ##########     Module     ##########
 alias .tail="bash $QEDT/Module/file_out_tail.sh"
 alias .vi="bash $QEDT/Module/file_out_vi.sh"
-alias QEDT_check_out="bash $QEDT/Module/file_out_check.sh"
 
 ##########      Draw    ##########
 alias .plotTD='py $QEDT/Draw/PlotTD.py'

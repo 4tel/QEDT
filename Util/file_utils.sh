@@ -34,9 +34,9 @@ function search_files() {
   if [ "${search_char}" == "" ];then echo -e "${KRED}Warning: string not given${KNRM}";return; fi
   # initial comment
   if [[ $init -eq 1 ]];then
-    printf "Find files that containing literal word \"${KRED}${search_char}${KNRM}\" "
-    if [[ $recur == 1 ]];then printf Recurivley;fi
-    printf "\n\n"
+    echo -ne "Find files that containing literal word \"${KRED}${search_char}${KNRM}\" "
+    if [[ $recur == 1 ]];then echo -nRecurivley;fi
+    echo -e "\n"
   fi
 
   function file_contains() {
@@ -60,19 +60,19 @@ function count_content() {
   path="$1"
   word="$2"
 
-  printf "${KGRN}File${KNRM}  : $path\n"
-  printf "${KGRN}Search${KNRM}: $word\n\n"
+  echo -ne "${KGRN}File${KNRM}  : $path"
+  echo -ne "${KGRN}Search${KNRM}: $word\n"
 
   grep -o -E "\b\w*${word}\w*" "$path" | sort | uniq -c
 }
 
 function get_size() {
+  # variables
   local bSort=0
   local target='.' 
-
+  # parse option
   OPTIONS=$(getopt -o hrR -l help,recursive -- "$@")
   eval set -- "$OPTIONS"
-
   set -- $(getopt -o sh -l help "$@")
   while [ -n "$1" ];do
     case "$1" in
@@ -82,18 +82,18 @@ function get_size() {
                 echo "Options:"
                 echo "-s) [word] sort by counting";return;;
       --) shift;break;;
-       *) printf "${KRED}${1} ${KNRM} is not an option";;
+       *) echo -e "${KRED}${1} ${KNRM} is not an option";;
     esac
     shift
   done
   if [ "$#" -ne 0 ];then target="$1";fi
-  
-  printf "${KCYN}Size of Files${KNRM}\n"
+  # get size of..
+  echo -e "${KCYN}Size of Files${KNRM}"
   if [ "$bSort" -ne 0 ]; then
     du -sh "$target"/* | sort -h
   else
     du -sh "$target"/*
-    printf "\n${KCYN}Size of Directory ($target)${KNRM}\n"
+    echo -e "\n${KCYN}Size of Directory ($target)${KNRM}"
     du -sh "$target"
   fi
 }

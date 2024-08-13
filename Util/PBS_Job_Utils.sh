@@ -4,20 +4,41 @@ function job_drop() {
   job_id=$1
 
   # delete job
-  echo "Job $job_id deletion requested."
+  echo -e "Job deletion requested. Job ID is \"${KMAG}${job_id}${KNRM}\""
   deletion=$(qdel $job_id 2>&1)
-  if [[ "$deletion" == *"Unknown Job Id"* ]];then
-    echo "Job $job_id is already deleted.";fi
-
-  echo "Trail Job $job_id state"
-  while true; do
-      output=$(qstat $job_id 2>&1)
-      if [[ "$output" == *"Unknown Job Id"* ]]; then
-          echo "Job $job_id has been deleted."
-          break
-      fi
-      sleep 1
-  done
+  ierr=$?
+  case $ierr in
+      # succesfully job deleted. (atleast succesfully qdel ended)
+      0)
+	echo -e "Trail Job state of \"${KMAG}${job_id}${KNRM}\""
+	while true; do
+	    output=$(qstat $job_id 2>&1)
+	    oerr=$?
+	    if [[ $oerr -ne 0 ]]; then
+	        echo -e "Job \"${KMAG}${job_id}${KNRM}\" has been deleted."
+	        break
+	    fi
+	    sleep 1
+	done
+	;;
+      # illegal Job ID format given
+      1)
+	echo $deletion
+	;;
+      # Job ID not given. 
+      2)
+	echo $deletion
+	;;
+      # unknown Job ID
+    153)
+	echo $deletion
+	;;
+      *)
+	echo unknown error
+	echo $deletion
+	;;
+  esac
+  exit $ierr
 }
 
 target_func=${1}
