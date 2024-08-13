@@ -11,7 +11,7 @@ function check_out() {
   if [ -f $file ] && [ $result -eq 0 ];then
     local base=$(basename $file .in)
     if [ "${base}" == "input_tmp" ];then
-       printf "\033[31m${file}\033[0m\n"
+       printf "${KRED}${file}${KNRM}\n"
     fi
     if [ ! -f ${1}/${base}.out ];then
 	echo $file

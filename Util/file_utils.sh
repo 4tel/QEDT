@@ -35,7 +35,7 @@ function search_files() {
   # initial comment
   if [[ $init -eq 1 ]];then
     echo -ne "Find files that containing literal word \"${KRED}${search_char}${KNRM}\" "
-    if [[ $recur == 1 ]];then echo -nRecurivley;fi
+    if [[ $recur == 1 ]];then echo -n Recurivley;fi
     echo -e "\n"
   fi
 

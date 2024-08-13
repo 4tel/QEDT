@@ -1,7 +1,7 @@
 #!/bin/bash
 string="123"
 
-echo -e "\033[31mN진법 출력하기\033[0m"
+echo -e "${KRED}N진법 출력하기${KNRM}"
 printf "10진법 : %s\n" $string
 printf "16진법 : %x\n" $string
 printf " 8진법 : %o\n" $string
@@ -11,20 +11,20 @@ echo   " 3진법 : "$(echo "obase=3 ;$string"|bc)
 echo   "21진법 : "$(echo "obase=21;$string"|bc)
 echo ""
 
-echo -e "\033[31mN진법을 10진법으로 출력하기\033[0m"
+echo -e "${KRED}N진법을 10진법으로 출력하기${KNRM}"
 printf "10진법 : %d\n" 10
 printf "16진법 : %d\n" 010
 printf "16진법 : %d\n" 0x10
 printf " 8진법 : %d\n" 0X10
 
-echo -e "\033[31m자료형을 바꾸어 출력하기\033[0m"
+echo -e "${KRED}자료형을 바꾸어 출력하기${KNRM}"
 # decimal = integer
 printf "signed decimal   : %d %i\n" 10 -10
 printf "unsigned decimal : %u %u\n" 10 -10
 printf "unsigned octal   : %o %o\n" 10 -10
 echo""
 
-echo -e "\033[31m다른 표현으로 출력하기\033[0m"
+echo -e "${KRED}다른 표현으로 출력하기${KNRM}"
 printf "과학적 표기법 : %e\n" $string
 printf "과학적 표기법 : %E\n" $string
 printf "  실수 표기법 : %f\n" $string
@@ -33,12 +33,12 @@ printf "과학적or 실수 : %Ge\n" $string
 printf "16진법   실수 : %a\n" $string
 printf "16진법   실수 : %A\n" $string
 
-echo -e "\033[31m편의성 출력 기능\033[0m"
+echo -e "${KRED}편의성 출력 기능${KNRM}"
 printf "부호를 포함하기  : %+d %+d\n" 10 -10
-printf "\033[32m부호 자리 비우기\033[0m : % d\n" 10 -10
+printf "${KGRN}부호 자리 비우기${KNRM} : % d\n" 10 -10
 printf "구분자 사용하기  : %'d\n\n" 1234567890
 
-echo -e "\033[31m잡다한 기능\033[0m"
+echo -e "${KRED}잡다한 기능${KNRM}"
 printf "8진법 0으로 시작 : %#o\n" 10
 printf "16진법 0x로 시작 : %#x %#X\n" 10 10
 printf "유효 소수점 표기 : %#g %#G\n" 1.23 1.23
