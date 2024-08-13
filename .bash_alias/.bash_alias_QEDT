@@ -1,0 +1,29 @@
+# .bashrc
+QEDT=$(dirname $current)
+
+###########     Utils     ##########
+Util="$QEDT/Util"
+alias QEDT_file_update="bash $Util/check_file_update.sh"
+alias .gitUpload="bash $Util/gitUpload.sh"
+alias .color="bash $Util/color.sh"
+# file Utils
+fileUtil="bash $Util/file_utils.sh"
+alias .find="${fileUtil} search_files 1 ."
+alias .count="${fileUtil} count_content"
+alias .sizeof="${fileUtil} get_size"
+alias .ss='.sizeof -s'
+# PBS Job Utils
+pbsUtil="bash $Util/PBS_Job_Utils.sh"
+alias .qdel="${pbsUtil} job_drop"
+
+##########     Module     ##########
+alias .tail="bash $QEDT/Module/file_out_tail.sh"
+alias .vi="bash $QEDT/Module/file_out_vi.sh"
+alias QEDT_check_out="bash $QEDT/Module/file_out_check.sh"
+
+##########      Draw    ##########
+alias .plotTD='py $QEDT/Draw/PlotTD.py'
+
+
+
+

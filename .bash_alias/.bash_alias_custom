@@ -1,0 +1,15 @@
+# .bashrc
+
+#export PATH=$HOME/libs/usr/bin:$PATH
+#export LD_LIBRARY_PATH=$HOME/libs/usr/bin:$LD_LIBRARY_PATH
+
+
+export CC=icc
+export CXX=icpc
+export MPIF90=mpiifort
+export FC=ifort
+export F90=ifort
+export F77=ifort
+export LD=mpiifort
+
+alias .TEST=~/qe/qe-7.3.1/qe-tddft/src/test/td_test.sh
