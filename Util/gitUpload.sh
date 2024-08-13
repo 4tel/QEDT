@@ -21,4 +21,5 @@ echo -e "${KGRN}new version: ${new_version}${KNRM}"
 # commit to current branch
 git commit -m "${new_version}"
 branch=$(git rev-parse --abbrev-ref HEAD)
-git push origin $branch
+echo -e "${KGRN}push to branch: ${branch}${KNRM}"
+git push origin "$branch"
