@@ -16,7 +16,7 @@ read -r major minor patch <<< "${version}"
 # add patch version and 1
 patch=$((patch+1))
 new_version="v${major}.${minor}.${patch}"
-echo -e "${KGRN}new version:${new_version}${KNRM}"
+echo -e "${KGRN}new version: ${new_version}${KNRM}"
 
 # commit to current branch
 git commit -m "${new_version}"
