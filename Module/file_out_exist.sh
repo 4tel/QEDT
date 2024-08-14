@@ -20,4 +20,4 @@ function check_out() {
 }
 
 echo "check .out is not exist."
-loop_dir check_out .
+loop_dir . "check_out" -r

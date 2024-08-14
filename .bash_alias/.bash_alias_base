@@ -5,3 +5,5 @@ source "$current/.bash_alias_QEDT"
 source "$current/.bash_alias_Linux"
 source "$current/.bash_alias_custom"
 source "$current/.bash_alias_conda"
+
+unset current

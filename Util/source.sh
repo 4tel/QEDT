@@ -3,6 +3,7 @@
 util_path="$(dirname ${BASH_SOURCE[0]})"
 declare -A filepath=(
 	["Util"]="${util_path}/Util.sh"
+	["variable"]="${util_path}/variables.sh"
 )
 
 for x in "$@";do

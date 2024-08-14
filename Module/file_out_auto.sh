@@ -91,7 +91,7 @@ function print_out() {
     echoCount "$char" "$file" "$out"
     if [ $? -ne 0 ];then Running=0;break;fi
   done
-  if [ $Running -eq 1 ];then printf "${KGRN}${txt}(Running)";fi
+  if [ $Running -eq 1 ];then echo -e "${KGRN}${txt}(Running)";fi
   
   for ((jdx=0; jdx<$maxNotice; jdx++));do
     local char="${noticeList[$jdx,0]}"
@@ -110,25 +110,26 @@ function print_out() {
 
 if true; then
   echo "Check .out file is valid."
-  loop_dir print_out .
+  loop_dir . "print_out" -r
 
+  # check result
   case $idx in
     1) 
       echo "There is no invalid .out file"
       ;;
     2)
-      printf "\n\n$text ${files[0]}\n\n"
+      echo -e "\n\n$text ${files[0]}\n"
       $run -f "${files[0]}"
       ;;
     *)
-      printf "\n\nselect what you want to ${text}\n\n"
+      echo -e "\n\nselect what you want to ${text}\n"
       read -p "Choice file index: " input
       while [ "$input" -ge "$idx" ];do
 	printf "Input is larger than files: ${input} > ${idx}"
 	read -p "Choice file index: " input
       done
       cur=$((input - 1))
-      printf "\n\n${text} ${files[$cur]}\n\n"
+      echo -e "\n\n${text} ${files[$cur]}\n"
       $run -f "${files[$cur]}"
       ;;
   esac

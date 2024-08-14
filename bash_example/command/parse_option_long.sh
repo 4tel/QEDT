@@ -1,6 +1,6 @@
 #!/bin/bash
 function print() { echo >&2 "$@"; }
-# https://mug896.github.io/bash-shell/getopts.html
+# ref) https://mug896.github.io/bash-shell/getopts.html
 
 # 외부 명령인 getopt를 이용해 long option도 parse
 

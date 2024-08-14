@@ -4,3 +4,5 @@ condas="/home/yhkim/programs/condas/"
 alias .act="conda activate "
 alias .deact="conda deactivate"
 alias .list="conda env list"
+
+unset condas

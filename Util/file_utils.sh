@@ -1,5 +1,5 @@
 #!/bin/bash
-path="$(dirname $BASH_SOURCE[0])"
+path="$(dirname ${BASH_SOURCE[0]})"
 source "${path}/source.sh" "Util"
 
 function search_files() {
@@ -49,7 +49,7 @@ function search_files() {
   }
   # check file contains search string
   if [[ $recur == 1 ]];then
-    loop_dirs "file_contains" "$dir"
+    loop_dirs "$dir" "file_contains" -r
   else
     for file in "$dir"/*;do
       if [ -f "$file" ];then file_contains "$file";fi

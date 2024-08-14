@@ -1,6 +1,6 @@
 #!/bin/bash
 function print() { echo >&2 "$@"; }
-# https://mug896.github.io/bash-shell/getopts.html
+# ref) https://mug896.github.io/bash-shell/getopts.html
 
 # linux built-in함수인 getopts를 이용하여 short option 처리
 function parse_options() {
