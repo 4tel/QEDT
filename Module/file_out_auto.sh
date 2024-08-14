@@ -1,5 +1,4 @@
 #!/bin/bash
-
 path="$(dirname $BASH_SOURCE[0])"
 source "$path/../Util/source.sh" "Util"
 
@@ -12,7 +11,7 @@ function echoCount() {
   local out="$3"
   local check=$(grep "$char" $file -c)
   if grep -q -- "$char" $file;then
-    printf "$out" >&2
+    print -n "$out"
     return 1
   fi
   return 0
@@ -91,7 +90,7 @@ function print_out() {
     echoCount "$char" "$file" "$out"
     if [ $? -ne 0 ];then Running=0;break;fi
   done
-  if [ $Running -eq 1 ];then echo -e "${KGRN}${txt}(Running)";fi
+  if [ $Running -eq 1 ];then print -n "${KGRN}${txt}(Running)";fi
   
   for ((jdx=0; jdx<$maxNotice; jdx++));do
     local char="${noticeList[$jdx,0]}"
@@ -100,37 +99,39 @@ function print_out() {
     local out="${color} (${notice})"
     echoCount "$char" "$file" "$out"
   done
-  printf "${KNRM}\n"
+  print "${KNRM}"
   mTime=$(stat -c %y $file)
   fTime=$(date -d "$mTime" +"%y-%m-%d(%a) %T")
-  printf "    $fTime\n" >&2
+  print "    $fTime"
   files+=($file)
   ((idx++))
 }
 
 if true; then
-  echo "Check .out file is valid."
+  # run
+  print "Check .out file is valid."
   loop_dir . "print_out" -r
-
   # check result
   case $idx in
     1) 
-      echo "There is no invalid .out file"
+      print "There is no invalid .out file"
+      exit 1;
       ;;
     2)
-      echo -e "\n\n$text ${files[0]}\n"
-      $run -f "${files[0]}"
+      cur=0
       ;;
     *)
-      echo -e "\n\nselect what you want to ${text}\n"
+      print "\n\nselect what you want to ${text}\n"
       read -p "Choice file index: " input
       while [ "$input" -ge "$idx" ];do
-	printf "Input is larger than files: ${input} > ${idx}"
+	print "Input is larger than files: ${input} > ${idx}"
 	read -p "Choice file index: " input
       done
       cur=$((input - 1))
-      echo -e "\n\n${text} ${files[$cur]}\n"
-      $run -f "${files[$cur]}"
       ;;
   esac
+  # run
+  print "\n\n${KMAG}${text} ${files[$cur]}${KNRM}\n"
+  $run -f "${files[$cur]}"
 fi
+

@@ -19,28 +19,31 @@ function loop_dirs() {
     local func_dir=$3
     if [ "$4" == "-r" ];then local loop=1;fi
   fi
+  if [ "$func_dir"=="" ];then print "func_dir is not exists.";fi
 
   local option="$(printf '! -name %s ' ${passPattern[*]})"
+
   # current directory's file
   print "${KCYN}search in \"${KGRN}$(dirname ${path})${KCYN}\"${KNRM}"
-  find "$path" -maxdepth 1 -type f $option | while read file;do
+  while read file;do
     $func_file "$file"
-  done
+  done < <(find "$path" -maxdepth 1 -type f $option)
+
   # current directory's dir
-  find "$path" -mindepth 1 -maxdepth 1 -type d $option ! -name "." | while read dir;do
+  while read dir;do
     if [ "$func_dir" != "" ];then $func_dir "$dir";fi
     # child directories
     if [[ $loop -eq 1 ]];then
       print "${KCYN}search in \"${KGRN}${dir}${KCYN}\"${KNRM}"
-      find "$dir" $option | while read file;do
+      while read file;do
 	if [ -d "$file" ];then
 	  if [ "$func_dir" != "" ];then $func_dir "$file";fi
 	else
 	  $func_file "$file"
 	fi
-      done
+      done < <(find "$dir" $option)
     fi
-  done
+  done < <(find "$path" -mindepth 1 -maxdepth 1 -type d $option ! -name ".")
 }
 function loop_dir() { loop_dirs "$@"; }
 
