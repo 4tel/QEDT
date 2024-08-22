@@ -6,7 +6,6 @@ source "${path}/source.sh" variable
 function print() { echo >&2 -e "$@"; }
 
 # loop directories
-
 function loop_dirs() {
   # get argument
   local path=$1
@@ -19,15 +18,15 @@ function loop_dirs() {
     local func_dir=$3
     if [ "$4" == "-r" ];then local loop=1;fi
   fi
-  if [ "$func_dir"=="" ];then print "func_dir is not exists.";fi
+  if [ "$func_dir"=="" ];then print "(NOTE:func_dir is not exists in script)";fi
 
-  local option="$(printf '! -name %s ' ${passPattern[*]})"
+  local ignore_option="$(printf '! -name %s ' ${passPattern[*]})"
 
   # current directory's file
   print "${KCYN}search in \"${KGRN}$(dirname ${path})${KCYN}\"${KNRM}"
   while read file;do
     $func_file "$file"
-  done < <(find "$path" -maxdepth 1 -type f $option)
+  done < <(find "$path" -maxdepth 1 -type f ${ignore_option})
 
   # current directory's dir
   while read dir;do
@@ -41,9 +40,9 @@ function loop_dirs() {
 	else
 	  $func_file "$file"
 	fi
-      done < <(find "$dir" $option)
+      done < <(find "$dir" ${ignore_option})
     fi
-  done < <(find "$path" -mindepth 1 -maxdepth 1 -type d $option ! -name ".")
+  done < <(find "$path" -mindepth 1 -maxdepth 1 -type d ${ignore_option} ! -name ".")
 }
 function loop_dir() { loop_dirs "$@"; }
 
@@ -82,7 +81,7 @@ if [ "${#BASH_SOURCE[@]}" -eq 1 ];then
   function extension_test() {
     check_extension "$1" "out"
     print ${KBLU} $1
-    print ${KYEL}resut:${KNRM} $?
+    print ${KYEL}result:${KNRM} $?
   }
   print "${KBLU}test of check_extension${KNRM}"
   loop_dirs "$PWD" extension_test -r

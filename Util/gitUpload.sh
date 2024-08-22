@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git add -A
+git add -A .
 # get current version in commit summary
 current_version=$(git log -1 --pretty=format:%s)
 

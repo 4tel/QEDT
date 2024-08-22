@@ -16,6 +16,7 @@ alias ls='/usr/bin/ls -A --color=auto -I "\.*\.tmp"'
 alias ll='/usr/bin/ls -lh --color=auto'
 alias lt='/usr/bin/ls -lth --color=auto'
 alias .ff='find -name'
+alias .ffi='find -iname'
 
 # colors
 export KNRM="\033[0m"

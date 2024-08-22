@@ -23,6 +23,7 @@
 	* ll : ls with details
 	* lt : ls with details and sort by last edited time
 	* .ff [file] : find file by file name
+	* .ffi [file] : find file by file name ignore (upper/lower)case distinct
 * colors
 	* Espape Character of Color.
 	* use ".color" or see Util/colors.sh

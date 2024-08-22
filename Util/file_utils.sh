@@ -3,27 +3,36 @@ path="$(dirname ${BASH_SOURCE[0]})"
 source "${path}/source.sh" "Util"
 
 function search_files() {
+  function help_msg() {
+    echo "Usage: .find [OPTION]... WORD"
+    echo "find files that containing WORD"
+    echo ""
+    echo "Options:"
+    echo "	-r | -R | --recursive) find recursively"
+    echo "	-i) ignore (upper/lower)case"
+    echo "	-n) find when NOT containing WORD"
+  }
   # parse argument
   OPTIND=1
   local init=$1
   local dir="$2"
   local recur=0
   local not=0
+  local ignore=0
   local search_char=""
   shift 2
   # parse options
-  OPTIONS=$(getopt -o rRnh -l recursive,help -- "$@")
+  local optcnt
+  local option
+  OPTIONS=$(getopt -o rRinh -l recursive,help -- "$@")
   eval set -- "$OPTIONS"
   while true;do
     case "$1" in
-      -r|-R|--recursive) recur=1;shift 1;;
-      -n) not=1;shift 1;;
-      -h|--help) echo "Usage: .find [OPTION]... WORD"
-		echo -e "find file that containing WORD\n"
-		echo "Options:"
-		echo "	-r | -R | --recursive) find files recursively";
-		echo "	-n) find file tath not containing WORD";
-		return;;
+      -r | -R | --recursive) 
+	  option1+="-r";optcnt+=1;recur=1;shift 1;;
+      -i) option2+="i"; optcnt+=1;ignore=1;shift 1;;
+      -n) option2+="L"; optcnt+=1;not=1;shift 1;;
+      -h|--help) help_msg;return;;
       --) shift 1;break;;
       *) search_char+=" $1";shift 1;return;;
     esac
@@ -31,30 +40,33 @@ function search_files() {
   shift $(( OPTIND-1 ))
   search_char="$*"
   # warning
-  if [ "${search_char}" == "" ];then echo -e "${KRED}Warning: string not given${KNRM}";return; fi
+  if [ "${search_char}" == "" ];then 
+    if [[ $optcnt -eq 0 ]];then help_msg
+    else echo -e "${KRED}Warning: string not given${KNRM}";fi
+    return
+  fi
   # initial comment
   if [[ $init -eq 1 ]];then
-    echo -ne "Find files that containing literal word \"${KRED}${search_char}${KNRM}\" "
+    echo -n "Find files that "
+    if [[ $not == 1 ]];then echo -ne "${KRED}NOT ${KNRM}";fi
+    echo -ne "containing literal word \"${KRED}${search_char}${KNRM}\" "
     if [[ $recur == 1 ]];then echo -n Recurivley;fi
+    if [[ $ignore == 1 ]];then echo -e "\n\twith ignore case distinct";fi
     echo -e "\n"
   fi
 
   function file_contains() {
     local file="$1"
-    if grep -q -- "$search_char" "$file";then
-      if [[ $not == 0 ]];then echo "$file";fi
+    if [[ $not == 1 ]];then
+      grep "-l${option2}" -- "$search_char" "$file"
     else
-      if [[ $not == 1 ]];then echo "$file";fi
+      while read target;do
+	echo "${target} (count: $(grep -c -- $search_char $target))"
+      done < <(grep "-l${option2}" -- "$search_char" "$file")
     fi
   }
   # check file contains search string
-  if [[ $recur == 1 ]];then
-    loop_dirs "$dir" "file_contains" -r
-  else
-    for file in "$dir"/*;do
-      if [ -f "$file" ];then file_contains "$file";fi
-    done
-  fi
+  loop_dirs "$dir" "file_contains" "${option1}"
 }
 function count_content() {
   path="$1"
