@@ -18,12 +18,11 @@ function loop_dirs() {
     local func_dir=$3
     if [ "$4" == "-r" ];then local loop=1;fi
   fi
-  if [ "$func_dir"=="" ];then print "(NOTE:func_dir is not exists in script)";fi
+  if [ "$func_dir" == "" ];then print "(NOTE:func_dir is not exists in script)";fi
 
-  local ignore_option="$(printf '! -name %s ' ${passPattern[*]})"
-
+  local ignore_option="$(printf '! -wholename *%s* ' ${passPattern[*]})"
   # current directory's file
-  print "${KCYN}search in \"${KGRN}$(dirname ${path})${KCYN}\"${KNRM}"
+  print "${CLCL}${KCYN}search in \"${KGRN}$(dirname ${path})${KCYN}\"${KNRM}"
   while read file;do
     $func_file "$file"
   done < <(find "$path" -maxdepth 1 -type f ${ignore_option})
@@ -33,7 +32,7 @@ function loop_dirs() {
     if [ "$func_dir" != "" ];then $func_dir "$dir";fi
     # child directories
     if [[ $loop -eq 1 ]];then
-      print "${KCYN}search in \"${KGRN}${dir}${KCYN}\"${KNRM}"
+      print "${CLCL}${KCYN}search in \"${KGRN}${dir}${KCYN}\"${KNRM}"
       while read file;do
 	if [ -d "$file" ];then
 	  if [ "$func_dir" != "" ];then $func_dir "$file";fi
@@ -41,8 +40,10 @@ function loop_dirs() {
 	  $func_file "$file"
 	fi
       done < <(find "$dir" ${ignore_option})
+      print -n  "${CLCL}"
     fi
   done < <(find "$path" -mindepth 1 -maxdepth 1 -type d ${ignore_option} ! -name ".")
+  print "${CLCL}"
 }
 function loop_dir() { loop_dirs "$@"; }
 

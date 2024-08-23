@@ -7,11 +7,11 @@
 foo="foo-bar-foobar"
 echo -e "-string: ${KGRN}${foo}${KNRM}"
 # echoes 'bar-foobar'  (Removes 'foo-' because that matches '*-')
-echo -e "long tail(#): ${KGRN}${foo#*-}${KNRM}"
+echo -e "long tail(#*-): ${KGRN}${foo#*-}${KNRM}"
 # echoes 'foobar' (Removes 'foo-bar-')
-echo -e "short tail(##): ${KGRN}${foo##*-}${KNRM}"
+echo -e "short tail(##*-): ${KGRN}${foo##*-}${KNRM}"
 # echoes 'foo-bar'
-echo -e "lone head(%): ${KGRN}${foo%-*}${KNRM}"
+echo -e "lone head(%-*): ${KGRN}${foo%-*}${KNRM}"
 # echoes 'foo'
-echo -e "short head(%%): ${KGRN}${foo%%-*}${KNRM}"
+echo -e "short head(%%-*): ${KGRN}${foo%%-*}${KNRM}"
 

@@ -61,12 +61,16 @@ function search_files() {
       grep "-l${option2}" -- "$search_char" "$file"
     else
       while read target;do
-	echo "${target} (count: $(grep -c -- $search_char $target))"
+	echo -e "${CLCL}${target} (count: $(grep -c -- "$search_char" "$target"))"
       done < <(grep "-l${option2}" -- "$search_char" "$file")
     fi
   }
+  function dir_print() {
+    local dir="$1"
+    echo -ne "${CLCL}${KCYN}search in \"${KYEL}${dir}${KCYN}\"${KNRM}"
+  }
   # check file contains search string
-  loop_dirs "$dir" "file_contains" "${option1}"
+  loop_dirs "$dir" "file_contains" "dir_print" "${option1}"
 }
 function count_content() {
   path="$1"

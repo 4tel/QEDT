@@ -28,3 +28,5 @@ export KMAG="\033[35m"
 export KCYN="\033[36m"
 export KWHT="\033[37m"
 
+# other escape string
+export CLCL="\033[2K\r"

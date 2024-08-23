@@ -1,6 +1,5 @@
 # .bashrc
 current=$(dirname "${BASH_SOURCE[0]}")
-
 source "$current/.bash_alias_QEDT"
 source "$current/.bash_alias_Linux"
 source "$current/.bash_alias_custom"

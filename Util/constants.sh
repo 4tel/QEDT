@@ -1,3 +1,3 @@
 #!/bin/bash
 
-passDir=("work" "tmp" "outdir" "$TMP" "test")
+passDir=("work" "tmp" "outdir" "\$TMP" "test")
