@@ -1,3 +1,15 @@
 #!/bin/bash
 
-passPattern=(".git" "work" "tmp" "outdir" "$TMP" "test" "*.swp")
+passDir=()
+# hidden
+passDir+=(".*")
+# temp directory
+passDir+=("tmp" "\$TMP")
+# test
+passDir+=("test*")
+# work or output
+passDir+=("work" "outdir")
+
+
+passPatterns=("${passDir[@]}")
+passPatterns+=("*.swp")

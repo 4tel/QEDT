@@ -8,6 +8,7 @@ alias node='pbsnodes -ajS '
 # shortcut of executable
 alias v2xsf='~/bin/v2xsf'
 alias xc='sh ~/programs/xcrysden-1.5.60-bin-shared/xcrysden'
+alias vscode='~/programs/VSCode-1.81.1/code --no-sandbox'
 
 # shortcut of option
 alias .unpack='tar -xzvf '

@@ -19,6 +19,7 @@ function search_files() {
   local recur=0
   local not=0
   local ignore=0
+  local count=0
   local search_char=""
   shift 2
   # parse options
@@ -29,9 +30,10 @@ function search_files() {
   while true;do
     case "$1" in
       -r | -R | --recursive) 
-	  option1+="-r";optcnt+=1;recur=1;shift 1;;
-      -i) option2+="i"; optcnt+=1;ignore=1;shift 1;;
-      -n) option2+="L"; optcnt+=1;not=1;shift 1;;
+	  optcnt+=1;option1+="-r";recur=1;shift 1;;
+      -i) optcnt+=1;option2+="i";ignore=1;shift 1;;
+      -n) optcnt+=1;option2+="L";not=1;shift 1;;
+      -c) optcnt+=1;count=1;shift 1;;
       -h|--help) help_msg;return;;
       --) shift 1;break;;
       *) search_char+=" $1";shift 1;return;;
@@ -55,15 +57,19 @@ function search_files() {
     echo -e "\n"
   fi
 
+  if [[ $count == 1 ]] && [[ $not == 0 ]];then
+    function file_info() {
+      echo -ne " count: $(grep -c -- "$search_char" "$target"))"
+    }
+  else
+    function file_info() {
+      echo -n ""
+    }
+  fi
   function file_contains() {
-    local file="$1"
-    if [[ $not == 1 ]];then
-      grep "-l${option2}" -- "$search_char" "$file"
-    else
-      while read target;do
-	echo -e "${CLCL}${target} (count: $(grep -c -- "$search_char" "$target"))"
-      done < <(grep "-l${option2}" -- "$search_char" "$file")
-    fi
+    while read target;do
+      echo -e "${CLCL}${target}$(file_info)"
+    done < <(grep "-l${option2}" -- "$search_char" "$file")
   }
   function dir_print() {
     local dir="$1"

@@ -20,12 +20,15 @@ function loop_dirs() {
   fi
   if [ "$func_dir" == "" ];then print "(NOTE:func_dir is not exists in script)";fi
 
-  local ignore_option="$(printf '! -wholename *%s* ' ${passPattern[*]})"
+  ignore_option=()
+  for passPattern in "${passPatterns[@]}";do
+    ignore_option+=("!" "-path" "*/$passPattern/*")
+  done
   # current directory's file
   print "${CLCL}${KCYN}search in \"${KGRN}$(dirname ${path})${KCYN}\"${KNRM}"
   while read file;do
     $func_file "$file"
-  done < <(find "$path" -maxdepth 1 -type f ${ignore_option})
+  done < <(find "$path" -maxdepth 1 -type f "${ignore_option[@]}")
 
   # current directory's dir
   while read dir;do
@@ -39,10 +42,10 @@ function loop_dirs() {
 	else
 	  $func_file "$file"
 	fi
-      done < <(find "$dir" ${ignore_option})
+      done < <(find "$dir" "${ignore_option[@]}")
       print -n  "${CLCL}"
     fi
-  done < <(find "$path" -mindepth 1 -maxdepth 1 -type d ${ignore_option} ! -name ".")
+  done < <(find "$path" -mindepth 1 -maxdepth 1 -type d "${ignore_option[@]}" ! -name ".")
   print "${CLCL}"
 }
 function loop_dir() { loop_dirs "$@"; }
