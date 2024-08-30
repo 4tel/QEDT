@@ -11,6 +11,8 @@ function search_files() {
     echo "	-r | -R | --recursive) find recursively"
     echo "	-i) ignore (upper/lower)case"
     echo "	-n) find when NOT containing WORD"
+    echo "	-c) print with count of containing WORD"
+    echo "	-p) print with line of containing WORD"
   }
   # parse argument
   OPTIND=1
@@ -20,12 +22,13 @@ function search_files() {
   local not=0
   local ignore=0
   local count=0
+  local printout=0
   local search_char=""
   shift 2
   # parse options
   local optcnt
   local option
-  OPTIONS=$(getopt -o rRinh -l recursive,help -- "$@")
+  OPTIONS=$(getopt -o rRinhcp -l recursive,help -- "$@")
   eval set -- "$OPTIONS"
   while true;do
     case "$1" in
@@ -34,6 +37,7 @@ function search_files() {
       -i) optcnt+=1;option2+="i";ignore=1;shift 1;;
       -n) optcnt+=1;option2+="L";not=1;shift 1;;
       -c) optcnt+=1;count=1;shift 1;;
+      -p) optcnt+=1;printout=1;shift 1;;
       -h|--help) help_msg;return;;
       --) shift 1;break;;
       *) search_char+=" $1";shift 1;return;;
@@ -57,18 +61,24 @@ function search_files() {
     echo -e "\n"
   fi
 
-  if [[ $count == 1 ]] && [[ $not == 0 ]];then
-    function file_info() {
-      echo -ne " count: $(grep -c -- "$search_char" "$target"))"
-    }
-  else
-    function file_info() {
-      echo -n ""
-    }
+  file_info=()
+  if [[ $not == 0 ]];then
+    if [[ $count == 1 ]];then
+      file_info+=("echo -ne \" \${KMAG}(count: \"")
+      file_info+=("echo -ne \$(grep -c -- \"\$search_char\" \"\$target\")")
+      file_info+=("echo -e \)\${KNRM}")
+    fi
+    if [[ $printout == 1 ]];then
+      file_info+=("grep \"\$search_char\" \"\$target\"")
+    fi
   fi
   function file_contains() {
     while read target;do
-      echo -e "${CLCL}${target}$(file_info)"
+      echo -ne "${CLCL}${KBLU}${target}${KNRM}"
+      for x in "${file_info[@]}";do
+	eval "$x"
+      done
+      echo 
     done < <(grep "-l${option2}" -- "$search_char" "$file")
   }
   function dir_print() {
