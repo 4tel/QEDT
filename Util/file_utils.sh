@@ -66,7 +66,7 @@ function search_files() {
     if [[ $count == 1 ]];then
       file_info+=("echo -ne \" \${KMAG}(count: \"")
       file_info+=("echo -ne \$(grep -c${option2} -- \"\$search_char\" \"\$file\")")
-      file_info+=("echo -e \)\${KNRM}")
+      file_info+=("echo -ne \)\${KNRM}")
     fi
     if [[ $printout == 1 ]];then
       if [[ "$option2" == "" ]];then
@@ -85,6 +85,7 @@ function search_files() {
       for x in "${file_info[@]}";do
         eval "$x"
       done
+      echo ""
    fi
   }
   # print for note current search directory
