@@ -33,7 +33,7 @@ function search_files() {
   while true;do
     case "$1" in
       -r | -R | --recursive) 
-	  optcnt+=1;option1+="-r";recur=1;shift 1;;
+	  optcnt+=1;option1+=("-r");recur=1;shift 1;;
       -i) optcnt+=1;option2+="i";ignore=1;shift 1;;
       -n) optcnt+=1;option2+="L";not=1;shift 1;;
       -c) optcnt+=1;count=1;shift 1;;
@@ -60,33 +60,40 @@ function search_files() {
     if [[ $ignore == 1 ]];then echo -e "\n\twith ignore case distinct";fi
     echo -e "\n"
   fi
-
+  # command for each searched files
   file_info=()
   if [[ $not == 0 ]];then
     if [[ $count == 1 ]];then
       file_info+=("echo -ne \" \${KMAG}(count: \"")
-      file_info+=("echo -ne \$(grep -c -- \"\$search_char\" \"\$target\")")
+      file_info+=("echo -ne \$(grep -c${option2} -- \"\$search_char\" \"\$file\")")
       file_info+=("echo -e \)\${KNRM}")
     fi
     if [[ $printout == 1 ]];then
-      file_info+=("grep \"\$search_char\" \"\$target\"")
+      if [[ "$option2" == "" ]];then
+        file_info+=("grep \"\$search_char\" \"\$file\"")
+      else
+        file_info+=("grep -${option2} \"\$search_char\" \"\$file\"")
+      fi
+      file_info+=("echo")
     fi
   fi
+  # apply command for searched files
   function file_contains() {
-    while read target;do
-      echo -ne "${CLCL}${KBLU}${target}${KNRM}"
+    local file="$1"
+    if grep -ql${option2} -- "$search_char" "$file";then
+      echo -ne "${CLCL}${KBLU}${file}${KNRM}"
       for x in "${file_info[@]}";do
-	eval "$x"
+        eval "$x"
       done
-      echo 
-    done < <(grep "-l${option2}" -- "$search_char" "$file")
+   fi
   }
+  # print for note current search directory
   function dir_print() {
     local dir="$1"
     echo -ne "${CLCL}${KCYN}search in \"${KYEL}${dir}${KCYN}\"${KNRM}"
   }
   # check file contains search string
-  loop_dirs "$dir" "file_contains" "dir_print" "${option1}"
+  loop_dirs "$dir" "file_contains" "dir_print" "${option1[@]}"
 }
 function count_content() {
   path="$1"

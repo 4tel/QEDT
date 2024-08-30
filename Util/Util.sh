@@ -42,7 +42,7 @@ function loop_dirs() {
 	else
 	  $func_file "$file"
 	fi
-      done < <(find "$dir" "${ignore_option[@]}")
+      done < <(find "$dir" -type f "${ignore_option[@]}")
       print -n  "${CLCL}"
     fi
   done < <(find "$path" -mindepth 1 -maxdepth 1 -type d "${ignore_option[@]}" ! -name ".")
