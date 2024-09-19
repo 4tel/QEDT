@@ -1,5 +1,0 @@
-varaible
-
-for
-while
-
